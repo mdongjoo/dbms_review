@@ -1,0 +1,11 @@
+SELECT * FROM EMPLOYEES ;
+--주석 하이픈 두개 ,단축키 : CTRL + /
+/**/ --범위주석 단축키 :CTRL + SHIFT + / 
+ -- *은 모든 컬럼을 조회할 때 SELECT절에 작성하면 된다 .
+ 
+--열골라내기 
+ SELECT  EMPLOYEE_ID ,
+ 	EMAIL ,
+ 	PHONE_NUMBER ,
+ 	HIRE_DATE 
+ FROM EMPLOYEES ;

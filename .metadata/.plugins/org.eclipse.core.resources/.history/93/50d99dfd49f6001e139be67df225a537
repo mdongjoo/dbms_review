@@ -1,0 +1,272 @@
+--[0900실습] 직원의 이름, 봉급, 인상봉급, 감축봉급 조회하기
+-- 이름은 성과 함께 띄어쓰기로 연결되어 있다
+-- 인상봉급은 기존봉급의 10% 증가(* 1.1)되었고 감축봉급은 기존 봉급의 10%(* 0.9)감소되었다
+-- 결과를 기존 봉급 오름차순으로 정렬하여 조회 
+SELECT * FROM EMPLOYEES ;
+
+SELECT LAST_NAME || ' ' || FIRST_NAME "직원의 이름",
+SALARY 봉급,
+SALARY *1.1 인상봉급,
+SALARY *0.9 감축봉급
+FROM EMPLOYEES 
+ORDER BY SALARY ;
+
+--[1300]
+SELECT * FROM EMPLOYEES ;
+
+-- 1)산술 연산자 
+--1. 날짜와 숫자 => 날짜 타입
+SELECT HIRE_DATE ,
+HIRE_DATE +10,
+HIRE_DATE -10 --기본 컬럼이 아니기에 날짜타입 아이콘에 주황점이 나타난다
+FROM EMPLOYEES ;
+
+--현재 날짜와 시간을 날짜 타입으로 가져오기 
+-- SYSDATE : 현재 날짜와 시간 정보를 가지고 있으며 오라클에서 기본적으로 제공한다 
+SELECT SYSDATE 
+FROM DUAL; --테이블이 지정되어 있지 않을때 특별하게 사용하는 테이블
+--DUAL : 오라클 데이터베이스에서 특별한 역할을 하는 테이블명 
+--단일 열만 갖는다. 해당 열에는 한 행만 포함되어있다 
+
+--날짜와 날짜 연산 
+-- 날짜 - 날짜 = 숫자타입 : 며칠이 지났는지 나온다 
+SELECT HIRE_DATE ,
+SYSDATE ,
+SYSDATE - HIRE_DATE  
+FROM EMPLOYEES ;
+
+--날짜 타입은 연/월/일만 가지고있지 않고 시간에 관한 데이터도 같이 가지고 있다 
+--만약 일(DATA)을 연산하는 것이 아닌 시간(HOUR)를 연산하고 싶다면?
+-- 시간을 일로 환산해주면 된다  (24H -> 1DAY , 12H -> 0.5DAY)
+--지금 시간에서 12H 더한 시간 확인하기
+SELECT SYSDATE ,
+SYSDATE +0.5 , --12H 을 더한 것 
+SYSDATE -0.5 ,--12H 을 뺀것
+SYSDATE +1/24, -- 1H을 더한 것 
+SYSDATE -1/48 --30M을 뺀것 
+FROM DUAL;
+-- 날짜와 숫자 연산에서 기본적으로 숫자는 일 수 를 의미하기 때문에 
+-- 시간 , 분 단위로 연산하고 싶다면 일(24H)로 환산해야한다 
+--1시간 : 1/24
+--30분 : 1/48 , 30/60/24
+
+--3)관계 연산자 
+--특정 행 ROW를 조회할 수 있다 WHERE 절에서 사용이 가능하다 
+SELECT * FROM EMPLOYEES ;
+--직원의 성, 이름 , 봉급을 조회한다 
+SELECT FIRST_NAME || ' ' || LAST_NAME 풀네임,
+SALARY 봉급
+FROM EMPLOYEES 
+WHERE SALARY > 10000 --알리아스를 이용하면 오류 
+ORDER BY SALARY;--알리아스 사용해도 무방 , ORDER BY 는 거의 마지막 순서 
+--WHERE 절에서 별칭을 사용하는 경우 컬럼을 찾지 못하는 오류가 발생한다 
+--명령어가 작동하는 순서가 있기 때문이다 
+--FROM절 테이블을 찾고 WHERE절이 실행되니때문에 원래있던 컬럼명으로 작성해주어야 오류가 발생하지 않는다
+
+
+-- 직원의 이름, 성을 조회한다 
+-- 단, 이름이 DAVID 인 직원만 골라서 출력하기 
+SELECT FIRST_NAME ,
+LAST_NAME 
+FROM EMPLOYEES 
+WHERE FIRST_NAME  = 'David';
+-- David 는 문자열 타입이므로 반드시 '' 로 감싸서 조회해야한다 
+-- ★ SQL은 대소문자를 구분하지않지만 값은 대소문자를 구분한다 
+
+--4. SQL 연산자 
+--BETWEEN AND 연산자 
+
+--EMPLOYEES테이블에서 SALARY 가 10000이상 12000이하인 직원의 
+--성 , 이름  봉급 , 봉급의 오름차순으로 조회하기 
+SELECT LAST_NAME ,
+FIRST_NAME ,
+SALARY 
+FROM EMPLOYEES 
+WHERE SALARY BETWEEN 10000 AND 12000 --사이 포함 여부 
+ORDER BY SALARY ;
+
+--IN 연산자 
+SELECT FIRST_NAME ,--3
+LAST_NAME ,
+SALARY 
+FROM EMPLOYEES --1
+WHERE SALARY IN(10000, 11000,12000)--2 일치여부 
+ORDER BY SALARY ;--4
+
+--LIKE 연산자 : 주로 문자 조건을 만들 때 사용한다 
+-- % : ~아무거나 
+SELECT FIRST_NAME 
+FROM EMPLOYEES 
+WHERE FIRST_NAME LIKE '%e'; --마지막이 e로 끝나는 문자값들 
+
+-- _ : 자리수 
+SELECT FIRST_NAME 
+FROM EMPLOYEES 
+WHERE FIRST_NAME LIKE '____e'; --e앞 4자리수가 있는 문자값들
+
+-- %e%  : e를 포함하는 문자를 의미
+-- %en% : en을 포함하는 문자를 의미
+-- %e%n% : e와 n을 포함하는 문자를 의미 
+-- %e_n% : e와 n사이에 한글자가 더 있는 문자를 포함하는 문자를 의미 
+
+--IS NULL / IS NOT NULL
+SELECT *
+FROM EMPLOYEES ;
+
+--NULL : 값이 없음을 나타내는 값 
+-- 0 + 10  => 10 
+-- NULL + 10 = > NULL 
+--차이를 구분해야한다
+SELECT NULL + 10 
+FROM DUAL;
+
+--직원 테이블에서 COMMISSION_PCT 가 NULL인 직원의 이름 , 성, 커미션을 조회하기
+SELECT FIRST_NAME ,
+LAST_NAME ,
+COMMISSION_PCT 
+FROM EMPLOYEES 
+WHERE COMMISSION_PCT IS NULL;
+--NULL은 비교연산자 = 로 비교할 수 없기때문에 IS NULL 로 사용해야한다 
+
+--COMMISSION_PCT 가 NOT NULL 인 직원 조회 
+SELECT FIRST_NAME ,
+LAST_NAME ,
+COMMISSION_PCT 
+FROM EMPLOYEES 
+WHERE COMMISSION_PCT IS NOT NULL;
+
+--직원 테이블에서 
+--부서가 영업부서이면서, 봉급이 10000이상인 직원들의 
+--이름 , 성 , 봉급, 부서ID를 봉급의 오름차순으로 조회하기 
+SELECT  FIRST_NAME ,
+LAST_NAME ,
+SALARY ,
+DEPARTMENT_ID 
+FROM EMPLOYEES 
+WHERE COMMISSION_PCT IS NOT NULL AND SALARY >= 10000
+ORDER BY SALARY ;
+
+
+--DEPARTMENT_ID 를 이용해서 관계도를 찾는다 
+SELECT * FROM EMPLOYEES ;
+
+SELECT  FIRST_NAME ,
+LAST_NAME ,
+SALARY ,
+DEPARTMENT_ID 
+FROM EMPLOYEES 
+WHERE COMMISSION_PCT IS NOT NULL AND SALARY >= 10000
+ORDER BY SALARY ;
+
+-- 테이블 생성
+CREATE TABLE TBL_MEMBER(
+	MEMBER_NAME VARCHAR2(1000),
+	MEMBER_AGE NUMBER
+);
+
+SELECT * FROM TBL_MEMBER ;
+DELETE FROM TBL_MEMBER ;--WHERE 절을 생략하면 모든 행의 데이터가 지워진다(주의)
+
+DROP TABLE TBL_MEMBER ;
+--값을 추가 INSERT INTO 
+INSERT INTO TBL_MEMBER(MEMBER_NAME,MEMBER_AGE)
+VALUES('문동주',20);
+
+INSERT INTO TBL_MEMBER
+VALUES('짱구',5);
+
+INSERT INTO TBL_MEMBER 
+VALUES('철수',5);
+
+--값을 수정 
+--짱구의 이름을 유리로 
+UPDATE TBL_MEMBER 
+SET	MEMBER_NAME = '유리'
+WHERE MEMBER_NAME = '짱구';
+
+UPDATE TBL_MEMBER 
+SET MEMBER_NAME ='홍길동'
+WHERE MEMBER_NAME = '문동주';
+
+--값을 삭제 DELETE FROM 
+DELETE FROM TBL_MEMBER 
+WHERE MEMBER_NAME = '홍길동';
+
+
+--학생 테이블 생성
+CREATE TABLE WEB_STUDENT(
+	STUDENT_NUMBER NUMBER,
+	STUDENT_NAME VARCHAR2(1000),
+	STUDENT_MATH NUMBER,
+	STUDENT_ENG NUMBER,
+	STUDENT_KOR NUMBER,
+	STUDENT_GRADE VARCHAR2(1000)
+);
+SELECT * FROM WEB_STUDENT ;
+
+--[실습] 
+--학생 테이블에 데이터 추가 
+-- 학생 번호, 이름 , 수학, 영어 , 국어 
+--1. 김철수 , 90, 90,90
+--2. 홍길동, 70,25,55
+--3. 이유리, 89, 91,77
+--4. 김웅이 , 52,100,92
+--5. 신짱구 , 22,71,92
+
+INSERT INTO WEB_STUDENT(STUDENT_NUMBER,STUDENT_NAME,STUDENT_MATH,STUDENT_ENG,STUDENT_KOR)
+VALUES (5,'신짱구' , 22,71,92);
+
+--전체 학생의 이름과 평균 점수 조회하기 (별칭도 넣기 )이름, 평균점수 
+SELECT STUDENT_NAME 이름,
+ROUND((STUDENT_MATH + STUDENT_ENG + STUDENT_KOR )/3,1) 평균점수
+FROM WEB_STUDENT ;
+
+--A: 90점 이상 B:80점이상 C:50점이상 F 50점 미만 
+--학생의 평균점수를 구하고 학점 수정하기 
+UPDATE WEB_STUDENT 
+SET STUDENT_GRADE = 'A'
+WHERE ((STUDENT_MATH + STUDENT_ENG + STUDENT_KOR )/3) >= 90;
+-- AND ((STUDENT_MATH + STUDENT_ENG + STUDENT_KOR ))/3 >= 50
+
+--학점이 올바르게 들어갔는지 학생 번호, 이름 , 평균 , 학점 조회하기 (별칭)
+SELECT STUDENT_NUMBER ,
+STUDENT_NAME ,
+ROUND((STUDENT_MATH + STUDENT_ENG + STUDENT_KOR)/3,1) 평균,
+STUDENT_GRADE 
+FROM WEB_STUDENT ;
+
+--학생의 수학 , 영어 , 국어 점수가 한 과목이라도 60점 미만이면 퇴학시키기 
+--퇴학 DB에서 삭제 (DELETE FROM  WHERE)
+DELETE FROM WEB_STUDENT
+WHERE STUDENT_MATH <60 OR STUDENT_ENG < 60 OR STUDENT_KOR < 60; 
+
+--CREATE
+--TBL을 테이블명 앞에 붙이는 이유는 나중에는 시퀀스나 인덱스나 뷰등 다른 것들도 만들어
+--생성할 수 있기 때문에 구분하기 위해서 앞에 TBL 을 명시해주는 것이 좋다 
+CREATE TABLE TBL_USER(
+	USER_NAME VARCHAR2(1000),
+	USER_AGE NUMBER
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

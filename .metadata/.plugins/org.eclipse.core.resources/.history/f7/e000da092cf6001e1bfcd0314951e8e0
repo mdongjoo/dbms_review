@@ -1,0 +1,12 @@
+--[0900실습] 직원의 이름, 봉급, 인상봉급, 감축봉급 조회하기
+-- 이름은 성과 함께 띄어쓰기로 연결되어 있다
+-- 인상봉급은 기존봉급의 10% 증가(* 1.1)되었고 감축봉급은 기존 봉급의 10%(* 0.9)감소되었다
+-- 결과를 기존 봉급 오름차순으로 정렬하여 조회 
+SELECT * FROM EMPLOYEES ;
+
+SELECT LAST_NAME || ' ' || FIRST_NAME "직원의 이름",
+SALARY ,
+SALARY *1.1 인상봉급,
+SALARY *0.9 감축봉급
+FROM EMPLOYEES 
+ORDER BY SALARY ;

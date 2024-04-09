@@ -1,0 +1,29 @@
+SELECT * FROM EMPLOYEES ;
+--주석 하이픈 두개 ,단축키 : CTRL + /
+/**/ --범위주석 단축키 :CTRL + SHIFT + / 
+ -- *은 모든 컬럼을 조회할 때 SELECT절에 작성하면 된다 .
+ 
+--열골라내기 
+ SELECT  EMPLOYEE_ID ,
+ 	EMAIL ,
+ 	PHONE_NUMBER ,
+ 	HIRE_DATE 
+ FROM EMPLOYEES ;
+ 
+--행골라내기 
+SELECT *
+FROM EMPLOYEES 
+WHERE SALARY > 10000;
+
+--정렬하기 
+SELECT *
+FROM EMPLOYEES 
+WHERE SALARY > 10000
+ORDER BY SALARY ;
+
+--연산자 (사칙연산)
+SELECT 5+5
+FROM DUAL; --숫자와 숫자의 연산은 숫자
+
+SELECT 5+'5'
+FROM DUAL; --숫자와 문자인 숫자의 연산은 숫자

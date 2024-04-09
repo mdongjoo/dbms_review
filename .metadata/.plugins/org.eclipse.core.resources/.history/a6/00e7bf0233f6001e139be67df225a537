@@ -1,0 +1,72 @@
+--[0900실습] 직원의 이름, 봉급, 인상봉급, 감축봉급 조회하기
+-- 이름은 성과 함께 띄어쓰기로 연결되어 있다
+-- 인상봉급은 기존봉급의 10% 증가(* 1.1)되었고 감축봉급은 기존 봉급의 10%(* 0.9)감소되었다
+-- 결과를 기존 봉급 오름차순으로 정렬하여 조회 
+SELECT * FROM EMPLOYEES ;
+
+SELECT LAST_NAME || ' ' || FIRST_NAME "직원의 이름",
+SALARY 봉급,
+SALARY *1.1 인상봉급,
+SALARY *0.9 감축봉급
+FROM EMPLOYEES 
+ORDER BY SALARY ;
+
+--[1300]
+SELECT * FROM EMPLOYEES ;
+
+-- 산술 연산자 
+--1. 날짜와 숫자 => 날짜 타입
+SELECT HIRE_DATE ,
+HIRE_DATE +10,
+HIRE_DATE -10 --기본 컬럼이 아니기에 날짜타입 아이콘에 주황점이 나타난다
+FROM EMPLOYEES ;
+
+--현재 날짜와 시간을 날짜 타입으로 가져오기 
+-- SYSDATE : 현재 날짜와 시간 정보를 가지고 있으며 오라클에서 기본적으로 제공한다 
+SELECT SYSDATE 
+FROM DUAL; --테이블이 지정되어 있지 않을때 특별하게 사용하는 테이블
+--DUAL : 오라클 데이터베이스에서 특별한 역할을 하는 테이블명 
+--단일 열만 갖는다. 해당 열에는 한 행만 포함되어있다 
+
+--날짜와 날짜 연산 
+-- 날짜 - 날짜 = 숫자타입 : 며칠이 지났는지 나온다 
+SELECT HIRE_DATE ,
+SYSDATE ,
+SYSDATE - HIRE_DATE  
+FROM EMPLOYEES ;
+
+--날짜 타입은 연/월/일만 가지고있지 않고 시간에 관한 데이터도 같이 가지고 있다 
+--만약 일(DATA)을 연산하는 것이 아닌 시간(HOUR)를 연산하고 싶다면?
+-- 시간을 일로 환산해주면 된다  (24H -> 1DAY , 12H -> 0.5DAY)
+--지금 시간에서 12H 더한 시간 확인하기
+SELECT SYSDATE ,
+SYSDATE +0.5 , --12H 을 더한 것 
+SYSDATE -0.5 --12H 을 뺀것
+FROM DUAL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
