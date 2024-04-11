@@ -1,0 +1,12 @@
+SELECT * FROM TBL_PRODUCT ;
+SELECT * FROM TBL_ORDER;
+
+-- 데이터 저장(DML - INSERT INTO)
+INSERT INTO TBL_PRODUCT
+VALUES(1, '아이패드 에어', 790000);
+
+INSERT INTO TBL_PRODUCT
+VALUES(2, '애플워치', 900000); -- 오류 상품번호가 pk라서 중복을 허용하지 않음 2로 변경
+
+INSERT INTO TBL_PRODUCT
+VALUES(3, '갤럭시워치', 500000); -- 오류 상품번호가 PK라서 NULL을 허용하지 않음 3으로 변경

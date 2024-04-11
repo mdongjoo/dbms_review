@@ -1,0 +1,32 @@
+SELECT * FROM TBL_PRODUCT ;
+SELECT * FROM TBL_ORDER;
+
+CREATE TABLE TBL_ORDER(
+	ORDER_ID NUMBER CONSTRAINT PK_ORDER PRIMARY KEY,
+	PRODUCT_NUMBER NUMBER,
+	ORDER_DATE DATE,
+	FOREIGN KEY(PRODUCT_NUMBER) REFERENCES TBL_PRODUCT(PRODUCT_NUMBER)
+);
+
+-- 데이터 저장(DML - INSERT INTO)
+INSERT INTO TBL_PRODUCT
+VALUES(1, '아이패드 에어', 790000);
+
+INSERT INTO TBL_PRODUCT
+VALUES(2, '애플워치', 900000); -- 오류 상품번호가 pk라서 중복을 허용하지 않음 2로 변경
+
+INSERT INTO TBL_PRODUCT
+VALUES(3, '갤럭시워치', 500000); -- 오류 상품번호가 PK라서 NULL을 허용하지 않음 3으로 변경
+
+
+--[실습] TBL_ANIMAL
+-- 동물 테이블 생성
+--고유번호(NUMBER) , 종류 , 나이 , 먹이 컬럼 추가 
+--1)테이블 조회 
+
+--2)제약 조건 추가 PK
+--3)컬럼추가 성별 
+--4)컬럼 이름 수정(고유번호)
+
+
+
